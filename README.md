@@ -1,2 +1,5 @@
-# insightface_gfpgan
-InsightFace + GFPGAN
+# Fase Swap - InsightFace + GFPGAN
+
+Used:
+https://github.com/deepinsight/insightface
+https://github.com/TencentARC/GFPGAN
