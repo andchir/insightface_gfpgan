@@ -4,6 +4,8 @@ Used:
 https://github.com/deepinsight/insightface  
 https://github.com/TencentARC/GFPGAN  
 
+Tested on **Python 3.10.12**  
+
 Face Swap:  
 ~~~
 python face_swap.py \
