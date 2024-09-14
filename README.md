@@ -1,4 +1,4 @@
-# Fase Swap - InsightFace + GFPGAN
+# Face Swap - InsightFace + GFPGAN
 
 Used:
 https://github.com/deepinsight/insightface
