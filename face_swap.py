@@ -76,7 +76,7 @@ def main():
         setattr(namespace, 'suffix', None)
         setattr(namespace, 'only_center_face', False)
         setattr(namespace, 'aligned', False)
-        setattr(namespace, 'ext', 'jpg')
+        setattr(namespace, 'ext', 'auto')
         setattr(namespace, 'version', '1.4')
         setattr(namespace, 'upscale', 2)
         setattr(namespace, 'weight', 0.5)
