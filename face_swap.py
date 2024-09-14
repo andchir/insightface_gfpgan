@@ -1,12 +1,19 @@
 import os
 import argparse
 import cv2
+import shutil
 import insightface
 from insightface.app import FaceAnalysis
 
 from inference_gfpgan import inference_gfpgan
 
 assert insightface.__version__>='0.7'
+
+
+def copy_and_replace(source_path, destination_path):
+    if os.path.exists(destination_path):
+        os.remove(destination_path)
+    shutil.move(source_path, destination_path)
 
 
 def face_swapping(input_path, face_input_path, output_path):
@@ -60,14 +67,24 @@ def main():
 
     output_image_path = face_swapping(args.input, args.face_input, args.output)
     if args.upscale:
-        filename, file_extension = os.path.splitext('/path/to/somefile.ext')
-        args = {
-            'v': '1.4',
-            's': 2,
-            'input': output_image_path,
-            'output': output_image_path
-        }
-        # output_image_path = inference_gfpgan(args)
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        if dir_path not in output_image_path:
+            output_image_path = os.path.join(dir_path, output_image_path)
+        namespace = argparse.Namespace()
+        setattr(namespace, 'bg_upsampler', 'realesrgan')
+        setattr(namespace, 'bg_tile', 400)
+        setattr(namespace, 'suffix', None)
+        setattr(namespace, 'only_center_face', False)
+        setattr(namespace, 'aligned', False)
+        setattr(namespace, 'ext', 'jpg')
+        setattr(namespace, 'version', '1.4')
+        setattr(namespace, 'upscale', 2)
+        setattr(namespace, 'weight', 0.5)
+        setattr(namespace, 'input', output_image_path)
+        setattr(namespace, 'output', os.path.join(dir_path, 'output', 'upscale_out'))
+        upscaled_output_path = inference_gfpgan(namespace)
+        if os.path.exists(upscaled_output_path):
+            copy_and_replace(upscaled_output_path, output_image_path)
     print('Done')
     print('Output: ', output_image_path)
 
