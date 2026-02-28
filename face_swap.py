@@ -16,6 +16,20 @@ def copy_and_replace(source_path, destination_path):
     shutil.move(source_path, destination_path)
 
 
+def delete_tmp_files(dir_path, basename):
+    file_name = basename.split('.')[0]
+    count = 0
+    if os.path.isfile(os.path.join(dir_path, 'cmp', f'{file_name}_00.png')):
+        os.remove(os.path.join(dir_path, 'cmp', f'{file_name}_00.png'))
+        count += 1
+    if os.path.isfile(os.path.join(dir_path, 'cropped_faces', f'{file_name}_00.png')):
+        os.remove(os.path.join(dir_path, 'cropped_faces', f'{file_name}_00.png'))
+    if os.path.isfile(os.path.join(dir_path, 'restored_faces', f'{file_name}_00.png')):
+        os.remove(os.path.join(dir_path, 'restored_faces', f'{file_name}_00.png'))
+        count += 1
+    return count
+
+
 def face_swapping(input_path, face_input_path, output_path):
     app = FaceAnalysis(name='buffalo_l')
     app.prepare(ctx_id=0, det_size=(640, 640))
@@ -83,7 +97,10 @@ def main():
         setattr(namespace, 'input', output_image_path)
         setattr(namespace, 'output', os.path.join(dir_path, 'output', 'upscale_out'))
         upscaled_output_path = inference_gfpgan(namespace)
+
         if os.path.exists(upscaled_output_path):
+            tmp_dir_path = os.path.dirname(os.path.dirname(upscaled_output_path))
+            delete_tmp_files(tmp_dir_path, os.path.basename(upscaled_output_path))
             copy_and_replace(upscaled_output_path, output_image_path)
     print('Done')
     print('Output: ', output_image_path)
