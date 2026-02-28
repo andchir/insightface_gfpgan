@@ -24,6 +24,7 @@ def delete_tmp_files(dir_path, basename):
         count += 1
     if os.path.isfile(os.path.join(dir_path, 'cropped_faces', f'{file_name}_00.png')):
         os.remove(os.path.join(dir_path, 'cropped_faces', f'{file_name}_00.png'))
+        count += 1
     if os.path.isfile(os.path.join(dir_path, 'restored_faces', f'{file_name}_00.png')):
         os.remove(os.path.join(dir_path, 'restored_faces', f'{file_name}_00.png'))
         count += 1
